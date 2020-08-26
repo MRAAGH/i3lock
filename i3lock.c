@@ -453,6 +453,18 @@ static void handle_key_press(xcb_key_press_event_t *event) {
             }
     }
 
+    // we get here only if pressed key was not Enter
+    // (note: ctrl+m and ctrl+j count as Enter)
+    // this is the right place to check for special keybindings
+    if (ctrl && ksym == XKB_KEY_x) {
+        // ctrl+x for suspend
+        // I put a little delay before systemctl suspend to make sure the i3lock process
+        // does not get paused on the system call,
+        // which could put you in an infinite suspend loop.
+        system("\/usr\/bin\/sh -c '\/usr\/bin\/sleep 0.5 && \/usr\/bin\/systemctl suspend -i'");
+        return;
+    }
+
     switch (ksym) {
         case XKB_KEY_u:
         case XKB_KEY_Escape:
