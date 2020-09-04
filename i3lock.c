@@ -395,6 +395,7 @@ static void handle_key_press(xcb_key_press_event_t *event) {
 
     ksym = xkb_state_key_get_one_sym(xkb_state, event->detail);
     ctrl = xkb_state_mod_name_is_active(xkb_state, XKB_MOD_NAME_CTRL, XKB_STATE_MODS_DEPRESSED);
+    bool super = xkb_state_mod_name_is_active(xkb_state, XKB_MOD_NAME_LOGO, XKB_STATE_MODS_DEPRESSED);
 
     /* The buffer will be null-terminated, so n >= 2 for 1 actual character. */
     memset(buffer, '\0', sizeof(buffer));
@@ -456,13 +457,46 @@ static void handle_key_press(xcb_key_press_event_t *event) {
     // we get here only if pressed key was not Enter
     // (note: ctrl+m and ctrl+j count as Enter)
     // this is the right place to check for special keybindings
+    if (super) {
+        switch (ksym) {
+            case XKB_KEY_x:
+            case XKB_KEY_3:
+                // super+x or super+3 for suspend
+                // I put a little delay before systemctl suspend to make sure the i3lock process
+                // does not get paused on the system call,
+                // which could put you in an infinite suspend loop.
+                system("/usr/bin/sh -c '/usr/bin/sleep 0.5 && /usr/bin/systemctl suspend -i'");
+                return;
+            case XKB_KEY_4:
+                // ctrl+4 for poweroff
+                system("/usr/bin/systemctl poweroff -i");
+                return;
+            // music controls (same as in my awesomewm config):
+            case XKB_KEY_s: system("/usr/bin/mpc toggle"); return;
+            case XKB_KEY_g: system("/usr/bin/mpc next"); return;
+            case XKB_KEY_d: system("/usr/bin/mpc prev"); return;
+            case XKB_KEY_0: system("/usr/bin/mpc seek 0"); return;
+            case XKB_KEY_Escape:
+                if (ctrl)
+                    system("/usr/bin/mpc seek -60");
+                else
+                    system("/usr/bin/mpc seek -10");
+                return;
+            case XKB_KEY_z:
+                if (ctrl)
+                    system("/usr/bin/mpc seek +60");
+                else
+                    system("/usr/bin/mpc seek +10");
+                return;
+            case XKB_KEY_r:
+                system("/usr/bin/amixer -c 0 -q set Master 2dB+ unmute");
+                return;
+            case XKB_KEY_e:
+                system("/usr/bin/amixer -c 0 -q set Master 2dB- unmute");
+                return;
+        }
+    }
     if (ctrl && ksym == XKB_KEY_x) {
-        // ctrl+x for suspend
-        // I put a little delay before systemctl suspend to make sure the i3lock process
-        // does not get paused on the system call,
-        // which could put you in an infinite suspend loop.
-        system("\/usr\/bin\/sh -c '\/usr\/bin\/sleep 0.5 && \/usr\/bin\/systemctl suspend -i'");
-        return;
     }
 
     switch (ksym) {
