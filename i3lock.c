@@ -459,16 +459,15 @@ static void handle_key_press(xcb_key_press_event_t *event) {
     // this is the right place to check for special keybindings
     if (super) {
         switch (ksym) {
-            case XKB_KEY_x:
-            case XKB_KEY_3:
-                // super+x or super+3 for suspend
+            case XKB_KEY_numbersign:
+                // super+shift+3 for suspend
                 // I put a little delay before systemctl suspend to make sure the i3lock process
                 // does not get paused on the system call,
                 // which could put you in an infinite suspend loop.
                 system("/usr/bin/sh -c '/usr/bin/sleep 0.5 && /usr/bin/systemctl suspend -i'");
                 return;
-            case XKB_KEY_4:
-                // ctrl+4 for poweroff
+            case XKB_KEY_dollar:
+                // shift+4 for poweroff
                 system("/usr/bin/systemctl poweroff -i");
                 return;
             // music controls (same as in my awesomewm config):
