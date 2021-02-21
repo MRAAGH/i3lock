@@ -475,13 +475,13 @@ static void handle_key_press(xcb_key_press_event_t *event) {
             case XKB_KEY_g: system("/usr/bin/mpc next"); return;
             case XKB_KEY_d: system("/usr/bin/mpc prev"); return;
             case XKB_KEY_0: system("/usr/bin/mpc seek 0"); return;
-            case XKB_KEY_Escape:
+            case XKB_KEY_v:
                 if (ctrl)
                     system("/usr/bin/mpc seek -60");
                 else
                     system("/usr/bin/mpc seek -10");
                 return;
-            case XKB_KEY_z:
+            case XKB_KEY_b:
                 if (ctrl)
                     system("/usr/bin/mpc seek +60");
                 else
