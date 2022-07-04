@@ -452,27 +452,27 @@ static void handle_key_press(xcb_key_press_event_t *event) {
                 system("/usr/bin/systemctl poweroff -i");
                 return;
             // music controls (same as in my awesomewm config):
-            case XKB_KEY_s: system("/usr/bin/mpc toggle"); return;
-            case XKB_KEY_g: system("/usr/bin/mpc next"); return;
-            case XKB_KEY_d: system("/usr/bin/mpc prev"); return;
-            case XKB_KEY_0: system("/usr/bin/mpc seek 0"); return;
+            case XKB_KEY_s: system("/usr/bin/mpc toggle >/dev/null"); return;
+            case XKB_KEY_g: system("/usr/bin/mpc next >/dev/null"); return;
+            case XKB_KEY_d: system("/usr/bin/mpc prev >/dev/null"); return;
+            case XKB_KEY_0: system("/usr/bin/mpc seek 0 >/dev/null"); return;
             case XKB_KEY_v:
                 if (ctrl)
-                    system("/usr/bin/mpc seek -60");
+                    system("/usr/bin/mpc seek -60 >/dev/null");
                 else
-                    system("/usr/bin/mpc seek -10");
+                    system("/usr/bin/mpc seek -10 >/dev/null");
                 return;
             case XKB_KEY_b:
                 if (ctrl)
-                    system("/usr/bin/mpc seek +60");
+                    system("/usr/bin/mpc seek +60 >/dev/null");
                 else
-                    system("/usr/bin/mpc seek +10");
+                    system("/usr/bin/mpc seek +10 >/dev/null");
                 return;
             case XKB_KEY_r:
-                system("/usr/bin/amixer -c 0 -q set Master 2dB+ unmute");
+                system("/usr/bin/amixer -c 0 -q set Master 2dB+ unmute >/dev/null");
                 return;
             case XKB_KEY_e:
-                system("/usr/bin/amixer -c 0 -q set Master 2dB- unmute");
+                system("/usr/bin/amixer -c 0 -q set Master 2dB- unmute >/dev/null");
                 return;
         }
     }
