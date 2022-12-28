@@ -469,10 +469,10 @@ static void handle_key_press(xcb_key_press_event_t *event) {
                     system("/usr/bin/mpc seek +10 >/dev/null");
                 return;
             case XKB_KEY_r:
-                system("/usr/bin/amixer -c 0 -q set Master 2dB+ unmute >/dev/null");
+                system("pamixer --source jack.monitor -i 3 >/dev/null");
                 return;
             case XKB_KEY_e:
-                system("/usr/bin/amixer -c 0 -q set Master 2dB- unmute >/dev/null");
+                system("pamixer --source jack.monitor -d 3 >/dev/null");
                 return;
         }
     }
