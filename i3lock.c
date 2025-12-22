@@ -474,6 +474,9 @@ static void handle_key_press(xcb_key_press_event_t *event) {
             case XKB_KEY_e:
                 system("pamixer --source jack.monitor -d 3 >/dev/null");
                 return;
+            case XKB_KEY_z:
+                system("my-pw eq blue");
+                return;
             case XKB_KEY_F5:
                 system("xbacklight -perceived -dec 5");
                 return;
